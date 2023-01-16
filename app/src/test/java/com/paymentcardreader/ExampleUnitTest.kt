@@ -9,6 +9,7 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+// TODO: remove after nfc module setup
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
