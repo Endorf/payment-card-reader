@@ -28,6 +28,3 @@ jobs:
         
       - name: Run unit tests
         run: ./gradlew test
-        
-      - name: Build
-        run: ./gradlew --no-daemon build
