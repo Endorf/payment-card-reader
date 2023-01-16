@@ -4,11 +4,10 @@ on:
   push: 
     paths-ignore:
       - '**.md'
-    branches: [ gh-actions-workflow ] 
-  pull_request:  
+  pull_request:
     paths-ignore:
       - '**.md'
-    branches: [ gh-actions-workflow ]
+    branches: [ main ]
 
 jobs:
   build:
