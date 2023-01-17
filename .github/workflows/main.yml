@@ -19,6 +19,10 @@ jobs:
         uses: actions/setup-java@v1
         with: {java-version: 11}
 
+      - name: Run Detekt
+        run: |
+          ./gradlew detekt
+
       - name: Run Unit tests
         run: |
           ./gradlew testDebugUnitTest
