@@ -52,9 +52,4 @@ dependencies {
     implementation libs.core.ktx
     implementation libs.androidx.appcompat
     implementation libs.material
-
-    // todo: remove after nfc module setup
-    testImplementation qualityControl.junit
-    androidTestImplementation qualityControl.androidx.junit.ext
-    androidTestImplementation qualityControl.androidx.espresso.core
 }
