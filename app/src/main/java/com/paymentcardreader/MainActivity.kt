@@ -7,7 +7,7 @@ import com.paymentcardreader.reader.nfc.NFCCardReader
 
 class MainActivity : AppCompatActivity() {
 
-    private val nfcCardReader: NFCCardReader by lazy { NFCCardReader(this) }
+    private val nfcCardReader: NFCCardReader by lazy { NFCCardReader() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,9 +1,8 @@
 package com.paymentcardreader.reader.nfc
 
-import android.app.Activity
 import android.content.Intent
 
-class NFCCardReader(activity: Activity) {
+class NFCCardReader() {
 
     fun onNewIntent(intent: Intent?) {}
 
