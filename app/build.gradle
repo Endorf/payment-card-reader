@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id("io.gitlab.arturbosch.detekt").version("1.22.0")
 }
 
 android {
@@ -30,6 +31,19 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            returnDefaultValues = true
+        }
+    }
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    parallel = true
+    config = files("$project.rootDir/.detekt/config.yml")
+    baseline = file("$project.rootDir/.detekt/detekt-baseline.xml")
 }
 
 dependencies {
@@ -37,8 +51,8 @@ dependencies {
     implementation libs.androidx.appcompat
     implementation libs.material
 
-    // TODO: remove after nfc module setup
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    // todo: remove after nfc module setup
+    testImplementation qualityControl.junit
+    androidTestImplementation qualityControl.androidx.junit.ext
+    androidTestImplementation qualityControl.androidx.espresso.core
 }
