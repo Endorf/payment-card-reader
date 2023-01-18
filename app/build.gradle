@@ -47,6 +47,8 @@ detekt {
 }
 
 dependencies {
+    implementation project(":nfc")
+
     implementation libs.core.ktx
     implementation libs.androidx.appcompat
     implementation libs.material
