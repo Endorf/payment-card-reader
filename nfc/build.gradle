@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'io.gitlab.arturbosch.detekt' version '1.22.0'
     id 'org.jlleitschuh.gradle.ktlint' version '11.0.0'
@@ -19,18 +19,17 @@ detekt {
     baseline = file("$project.rootDir/.detekt/detekt-baseline.xml")
 }
 
+
 android {
-    namespace 'com.paymentcardreader'
+    namespace 'com.paymentcardreader.reader.nfc'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.paymentcardreader"
         minSdk 21
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -46,12 +45,22 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    testOptions {
+        unitTests {
+            returnDefaultValues = true
+        }
+    }
 }
 
 dependencies {
-    implementation project(":nfc")
-
     implementation libs.core.ktx
-    implementation libs.androidx.appcompat
-    implementation libs.material
+
+    testImplementation testLibs.junit
+    testImplementation testLibs.mockito.core
+    testImplementation testLibs.mockito.inline
+    testImplementation testLibs.mockk
+
+    androidTestImplementation testLibs.androidx.junit.ext
+    androidTestImplementation testLibs.androidx.espresso.core
 }
