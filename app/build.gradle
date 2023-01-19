@@ -9,7 +9,7 @@ ktlint {
     android.set(true)
     outputColorName.set("RED")
     outputToConsole.set(true)
-    disabledRules = ["final-newline", "no-wildcard-imports"]
+    disabledRules = ["final-newline"]
 }
 
 detekt {
