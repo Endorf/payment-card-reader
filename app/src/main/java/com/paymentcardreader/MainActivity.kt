@@ -1,8 +1,8 @@
 package com.paymentcardreader
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.paymentcardreader.reader.nfc.NFCCardReader
 
 class MainActivity : AppCompatActivity() {
