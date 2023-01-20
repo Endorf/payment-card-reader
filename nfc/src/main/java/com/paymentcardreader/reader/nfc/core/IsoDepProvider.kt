@@ -4,7 +4,7 @@ import android.nfc.Tag
 import android.nfc.tech.IsoDep
 import androidx.annotation.VisibleForTesting
 import com.paymentcardreader.reader.nfc.core.apdu.ApduCommand
-import com.paymentcardreader.reader.nfc.core.apdu.ApduResponse
+import com.paymentcardreader.reader.nfc.core.apdu.ApduResponseTrailer
 import java.io.IOException
 
 internal class IsoDepProvider(
@@ -29,7 +29,7 @@ internal class IsoDepProvider(
 
     private inline fun parseResult(transceiveAction: () -> ByteArray?) = with(transceiveAction()) {
         Result(
-            ApduResponse.valueOf(this) == ApduResponse.SW9000, this
+            ApduResponseTrailer.valueOf(this) == ApduResponseTrailer.SW9000, this
         )
     }
 
