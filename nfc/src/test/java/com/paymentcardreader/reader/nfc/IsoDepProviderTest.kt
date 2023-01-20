@@ -3,7 +3,8 @@ package com.paymentcardreader.reader.nfc
 import android.nfc.tech.IsoDep
 import com.paymentcardreader.reader.nfc.core.IsoDepProvider
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
 
 class IsoDepProviderTest {
 

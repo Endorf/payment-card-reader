@@ -1,16 +1,6 @@
 package com.paymentcardreader.reader.nfc.core.apdu
 
-//application unblock
-//card block
-//external authenticate (7816-4)
-//generate application cryptogram
-//get data (7816-4)
-//get processing options
-//internal authenticate (7816-4)
-//PIN change / unblock
-//read record (7816-4)
-//select (7816-4)
-//verify (7816-4)
+@Suppress("MagicNumber")
 sealed interface ApduCommand {
 
     val cla: Int
@@ -42,10 +32,8 @@ sealed interface ApduCommand {
                 ins.toByte(),
                 p1.toByte(),
                 p2.toByte(),
-                lc.toByte(),
-                *bytes,
-                le.toByte()
-            )
+                lc.toByte()
+            ) + bytes + le.toByte()
         }
     }
 
@@ -90,10 +78,8 @@ sealed interface ApduCommand {
                 ins.toByte(),
                 p1.toByte(),
                 p2.toByte(),
-                lc.toByte(),
-                *bytes,
-                le.toByte()
-            )
+                lc.toByte()
+            ) + bytes + le.toByte()
         }
     }
 }

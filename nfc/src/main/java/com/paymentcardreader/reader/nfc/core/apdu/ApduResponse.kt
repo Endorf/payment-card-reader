@@ -1,5 +1,6 @@
 package com.paymentcardreader.reader.nfc.core.apdu
 
+@Suppress("MagicNumber")
 enum class ApduResponse(
     vararg val status: Byte
 ) {
