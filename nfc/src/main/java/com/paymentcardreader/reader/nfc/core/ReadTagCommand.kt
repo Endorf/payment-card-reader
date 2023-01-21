@@ -5,6 +5,9 @@ import android.util.Log
 import androidx.annotation.VisibleForTesting
 import com.paymentcardreader.reader.nfc.core.apdu.PaymentEnvironment
 
+/**
+ * Communicate and parse EMV public card data.
+ */
 internal class ReadTagCommand(
     tag: Tag? = null
 ) : Runnable {
