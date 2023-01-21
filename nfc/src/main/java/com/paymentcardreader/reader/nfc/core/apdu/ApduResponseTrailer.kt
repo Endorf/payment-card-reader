@@ -19,6 +19,7 @@ internal enum class ApduResponseTrailer(
     SW9000(0x90.toByte(), 0x00);
 
     companion object {
+        private const val MAX_TRAILER_BYTES_COUNT = 2
 
         /**
          * Returns the ApduResponseTrailer. If trailer isn't identified, null will be returned.
@@ -26,7 +27,7 @@ internal enum class ApduResponseTrailer(
          * @param value Trailer SW1, SW2 bytes.
          */
         fun valueOf(value: ByteArray?): ApduResponseTrailer? {
-            if (value == null) return null
+            if (value == null || value.size < MAX_TRAILER_BYTES_COUNT) return null
 
             return values().find {
                 val sw1 = value[value.size - 2]
