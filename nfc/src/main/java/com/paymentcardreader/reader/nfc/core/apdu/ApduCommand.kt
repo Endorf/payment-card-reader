@@ -13,7 +13,8 @@ package com.paymentcardreader.reader.nfc.core.apdu
  * @property P1 Parameter 1. Record number. If not used, a parameter byte has the value 0x00.
  * @property P2 Parameter 2. If not used, a parameter byte has the value 0x00.
  * @property Lc The length of command data field.
- * @property Le The expected bytes in response. In case Le present and contains 0x00, the maximum number of available data bytes (up to 256) is expected. In command body Le must be set to 0x00
+ * @property Le The expected bytes in response. In case Le present and contains 0x00,
+ * the maximum number of available data bytes (up to 256) is expected. In command body Le must be set to 0x00
  *
  *
  * NOTE: The class has implementation of three commands which are using in current project.
