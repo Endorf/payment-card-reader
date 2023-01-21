@@ -8,7 +8,7 @@ package com.paymentcardreader.reader.nfc.core.apdu
  * @property status Trailer SW1, SW2 bytes.
  */
 @Suppress("MagicNumber")
-enum class ApduResponseTrailer(
+internal enum class ApduResponseTrailer(
     vararg val status: Byte
 ) {
 

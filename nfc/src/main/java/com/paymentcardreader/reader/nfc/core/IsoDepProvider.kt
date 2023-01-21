@@ -5,8 +5,10 @@ import android.nfc.tech.IsoDep
 import androidx.annotation.VisibleForTesting
 import com.paymentcardreader.reader.nfc.core.apdu.ApduCommand
 import com.paymentcardreader.reader.nfc.core.apdu.ApduResponseTrailer
-import java.io.IOException
 
+/**
+ * Provides simple interface for communication with NFC devices using ISO-DEP protocol.
+ */
 internal class IsoDepProvider(
     tag: Tag? = null
 ) {
@@ -14,18 +16,30 @@ internal class IsoDepProvider(
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal var isoDep = IsoDep.get(tag)
 
+    /**
+     * Initiates communication with NFC devices.
+     */
     fun connect() {
         isoDep.connect()
     }
 
-    @Suppress("SwallowedException")
-    private fun transceive(command: ByteArray): ByteArray? {
-        return try {
-            isoDep?.transceive(command)
-        } catch (e: IOException) {
-            null
-        }
-    }
+    private fun transceive(command: ByteArray) = isoDep?.transceive(command) ?: ByteArray(0)
+
+    /**
+     * Initiates Select command.
+     */
+    fun select(data: ByteArray) = parseResult { transceive(ApduCommand.SELECT(bytes = data).data) }
+
+    /**
+     * Initiates GPO command.
+     */
+    fun gpo(data: ByteArray) = parseResult { transceive(ApduCommand.GPO(bytes = data).data) }
+
+    /**
+     * Initiates Read command.
+     */
+    fun read(p1: Int, p2: Int, le: Int) =
+        parseResult { transceive(ApduCommand.READ(p1, p2, le).data) }
 
     private inline fun parseResult(transceiveAction: () -> ByteArray?) = with(transceiveAction()) {
         Result(
@@ -33,13 +47,9 @@ internal class IsoDepProvider(
         )
     }
 
-    fun select(data: ByteArray) = parseResult { transceive(ApduCommand.SELECT(bytes = data).data) }
-
-    fun gpo(data: ByteArray) = parseResult { transceive(ApduCommand.GPO(bytes = data).data) }
-
-    fun read(p1: Int, p2: Int, le: Int) =
-        parseResult { transceive(ApduCommand.READ(p1, p2, le).data) }
-
+    /**
+     * Class represents results of operations with NFC device.
+     */
     data class Result(val isSuccessful: Boolean, val data: ByteArray? = null) {
 
         override fun equals(other: Any?): Boolean {

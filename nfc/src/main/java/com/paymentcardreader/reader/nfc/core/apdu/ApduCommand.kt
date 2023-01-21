@@ -19,7 +19,7 @@ package com.paymentcardreader.reader.nfc.core.apdu
  * NOTE: The class has implementation of three commands which are using in current project.
  */
 @Suppress("MagicNumber")
-sealed interface ApduCommand {
+internal sealed interface ApduCommand {
 
     val cla: Int
 
@@ -62,7 +62,7 @@ sealed interface ApduCommand {
     }
 
     /**
-     * Read command.
+     * Read Record command.
      * Command requests to read a record from ICC. The response contains the record.
      *
      * @property P1 Record number (Parameter 1)

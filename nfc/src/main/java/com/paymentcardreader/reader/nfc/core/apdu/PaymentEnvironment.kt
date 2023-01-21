@@ -3,7 +3,7 @@ package com.paymentcardreader.reader.nfc.core.apdu
 /**
  * Contact or contactless card payment system environment.
  */
-enum class PaymentEnvironment(private val env: String) {
+internal enum class PaymentEnvironment(private val env: String) {
 
     /**
      * Contact card.
