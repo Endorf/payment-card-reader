@@ -5,6 +5,7 @@ import android.nfc.tech.IsoDep
 import androidx.annotation.VisibleForTesting
 import com.paymentcardreader.reader.nfc.core.apdu.ApduCommand
 import com.paymentcardreader.reader.nfc.core.apdu.ApduResponseTrailer
+import java.io.IOException
 
 /**
  * Provides simple interface for communication with NFC devices using ISO-DEP protocol.
@@ -23,7 +24,15 @@ internal class IsoDepProvider(
         isoDep.connect()
     }
 
-    private fun transceive(command: ByteArray) = isoDep?.transceive(command) ?: ByteArray(0)
+    // TODO: test implementation without try-catch
+    @Suppress("SwallowedException")
+    private fun transceive(command: ByteArray): ByteArray? {
+        return try {
+            isoDep?.transceive(command)
+        } catch (e: IOException) {
+            null
+        }
+    }
 
     /**
      * Initiates Select command.
