@@ -34,11 +34,11 @@ class NFCCardReader(
 
     fun onNewIntent(intent: Intent?) {
         val tag = obtainTag(intent)
-        readTaskExecutor.submit(ReadTagCommand())
+        readTaskExecutor.submit(ReadTagCommand(tag))
         Log.d(TAG, "tag: $tag")
     }
 
-        @Suppress("DEPRECATION")
+    @Suppress("DEPRECATION")
     private fun obtainTag(intent: Intent?): Tag? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent?.getParcelableExtra(NfcAdapter.EXTRA_TAG, Tag::class.java)
