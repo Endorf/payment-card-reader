@@ -31,8 +31,8 @@ internal enum class ApduResponseTrailer(
             return values().find {
                 val sw1 = value[value.size - 2]
                 val sw2 = value[value.size - 1]
-                it.status.size == 1 && sw1 == it.status[0]
-                        || sw1 == it.status[0] && sw2 == it.status[1]
+                it.status.size == 1 && sw1 == it.status[0] ||
+                    sw1 == it.status[0] && sw2 == it.status[1]
             }
         }
     }

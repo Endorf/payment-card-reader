@@ -1,8 +1,8 @@
 package com.paymentcardreader.reader.nfc.apdu
 
 import com.paymentcardreader.reader.nfc.core.apdu.PaymentEnvironment
+import org.junit.Assert.assertArrayEquals
 import org.junit.Test
-import org.junit.Assert.*
 
 class PaymentEnvironmentTest {
 
