@@ -60,6 +60,7 @@ dependencies {
     testImplementation testLibs.mockito.core
     testImplementation testLibs.mockito.inline
     testImplementation testLibs.mockk
+    testImplementation testLibs.mockito.kotlin
 
     androidTestImplementation testLibs.androidx.junit.ext
     androidTestImplementation testLibs.androidx.espresso.core
