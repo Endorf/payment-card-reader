@@ -11,6 +11,10 @@ import android.nfc.tech.IsoDep
 import android.nfc.tech.NfcA
 import android.os.Build
 import android.util.Log
+import com.paymentcardreader.reader.nfc.core.ReadTagCommand
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
 
 @SuppressLint("UnspecifiedImmutableFlag")
 class NFCCardReader(
@@ -25,8 +29,12 @@ class NFCCardReader(
         }
     }
 
+    private var readTask: Future<*>? = null
+    private val readTaskExecutor: ExecutorService = Executors.newSingleThreadExecutor()
+
     fun onNewIntent(intent: Intent?) {
         val tag = obtainTag(intent)
+        readTaskExecutor.submit(ReadTagCommand(tag))
         Log.d(TAG, "tag: $tag")
     }
 
@@ -44,6 +52,7 @@ class NFCCardReader(
     }
 
     fun disableForegroundDispatch() {
+        readTask?.cancel(true)
         nfcAdapter.disableForegroundDispatch(activity)
     }
 
