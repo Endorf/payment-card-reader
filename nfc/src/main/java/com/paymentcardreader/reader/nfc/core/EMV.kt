@@ -296,7 +296,6 @@ enum class EMV(
      */
     fun isTemplate() = bytes.first().toInt().matchBitByBitIndex(5)
 
-
     @Suppress("FunctionNaming")
     companion object {
 
@@ -307,6 +306,5 @@ enum class EMV(
         fun CDOL1() = EMV.CARD_RISK_MANAGEMENT_DATA_OBJECT_LIST_1
         fun CDOL2() = EMV.CARD_RISK_MANAGEMENT_DATA_OBJECT_LIST_2
         fun SFI() = EMV.SHORT_FILE_IDENTIFIER
-
     }
 }
