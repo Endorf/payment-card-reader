@@ -116,3 +116,6 @@ private fun ByteArrayInputStream.ignoreEmptyBits() {
     }
     reset()
 }
+
+fun ByteArray?.asString(charset: Charset = Charsets.UTF_8) =
+    this?.run { String(this, charset) } ?: ""
