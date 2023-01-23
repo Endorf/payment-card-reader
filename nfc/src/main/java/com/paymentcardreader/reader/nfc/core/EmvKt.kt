@@ -2,6 +2,7 @@ package com.paymentcardreader.reader.nfc.core
 
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.nio.charset.Charset
 
 /**
  * According to ISO/IEC 8825, Table 36 defines the coding rules of the subsequent bytes of a BER-TLV
@@ -67,3 +68,51 @@ private fun ByteArrayInputStream.readTagLength(): Int {
  */
 private fun Int.isOneByteLength(): Boolean = (this shr 8) == 0
 
+private fun ByteArrayInputStream.readBody(length: Int): ByteArray {
+    val realLength: Int = available().takeIf { it < length } ?: length
+    return ByteArray(length).apply {
+        read(this, 0, realLength)
+    }
+}
+
+/**
+ * fixme: add documentation
+ */
+fun ByteArray?.extractTLV(vararg emv: EMV): ByteArray {
+    return this?.inputStream()?.let {
+        do {
+            it.ignoreEmptyBits()
+
+            val tag = it.readTag()
+            val len = it.readTagLength()
+            val body = it.readBody(len)
+
+            when {
+                tag == null -> continue
+                emv.contains(tag) -> return body
+                tag.isTemplate() -> with(body.extractTLV(*emv)) {
+                    if (isNotEmpty()) return@let this
+                }
+            }
+        } while (it.available() > 0)
+
+        return ByteArray(0)
+    } ?: ByteArray(0)
+}
+
+/**
+ * 0x00 or 0xff should be ignored between TLV items.
+ *
+ * Before, between, or after TLV-coded data objects,
+ * '00' or 'FF' bytes without any meaning may occur (for example, due to erased or modified TLV-coded data objects).
+ * It is strongly recommended that issuers do not use tags beginning with ‘FF’ for proprietary purposes.
+ */
+private fun ByteArrayInputStream.ignoreEmptyBits() {
+    mark(0)
+    var byte = read().toByte()
+    while (byte == 0xFF.toByte() || byte == 0x00.toByte()) {
+        mark(0)
+        byte = read().toByte()
+    }
+    reset()
+}
