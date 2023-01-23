@@ -21,7 +21,8 @@ internal class ReadTagCommand(
         val (isSuccessful, data) = provider.select(PaymentEnvironment.PPSE.toByteArray())
 
         if (isSuccessful) {
-            Log.d("ReadTagCommand", "scanning results: $isSuccessful, ${data?.size}")
+            val label = data.extractTLV(EMV.APPLICATION_LABEL)
+            Log.d("ReadTagCommand", "scanning results: ${label.asString()}")
         }
     }
 }
