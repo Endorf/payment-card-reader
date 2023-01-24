@@ -3,7 +3,8 @@ package com.paymentcardreader.reader.nfc.core
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
-//TODO: remove minimize MagicNumber.
+// TODO: remove minimize MagicNumber.
+
 /**
  * Identifies EMV-Tag among all bytes and return its body.
  */
