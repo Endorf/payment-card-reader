@@ -3,6 +3,7 @@ package com.paymentcardreader.reader.nfc.core
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
+//TODO: remove minimize MagicNumber.
 /**
  * Identifies EMV-Tag among all bytes and return its body.
  */
@@ -76,9 +77,9 @@ private fun ByteArrayInputStream.readTagIdBytes(): ByteArray? {
         nextByte and MAX_TAG_VALUE == MAX_TAG_VALUE &&
         nextByte != -1 &&
         !(
-                !nextByte.matchBitByBitIndex(7) ||
-                        nextByte.matchBitByBitIndex(7) && nextByte and 0x7f == 0
-                )
+            !nextByte.matchBitByBitIndex(7) ||
+                nextByte.matchBitByBitIndex(7) && nextByte and 0x7f == 0
+            )
     )
 
     return outputStream.toByteArray()
