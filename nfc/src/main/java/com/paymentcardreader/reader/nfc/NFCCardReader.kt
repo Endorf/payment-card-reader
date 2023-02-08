@@ -43,6 +43,7 @@ class NFCCardReader(
     }
 
     fun disableForegroundDispatch() {
+
         readTask?.cancel(true)
         nfcAdapter.disableForegroundDispatch(activity)
     }
