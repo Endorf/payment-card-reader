@@ -290,6 +290,12 @@ enum class EMV(
      */
     UPPER_CONSECUTIVE_OFFLINE_LIMIT(0x9F.toByte(), 0x23); // 9F23
 
+    /**
+     * A constructed data object where the value field contains one or more primitive or constructed data objects.
+     * The value field of a constructed data object is called a template.
+     */
+    fun isTemplate() = bytes.first().toInt().matchBitByBitIndex(5)
+
     @Suppress("FunctionNaming")
     companion object {
 
@@ -300,6 +306,5 @@ enum class EMV(
         fun CDOL1() = EMV.CARD_RISK_MANAGEMENT_DATA_OBJECT_LIST_1
         fun CDOL2() = EMV.CARD_RISK_MANAGEMENT_DATA_OBJECT_LIST_2
         fun SFI() = EMV.SHORT_FILE_IDENTIFIER
-
     }
 }
