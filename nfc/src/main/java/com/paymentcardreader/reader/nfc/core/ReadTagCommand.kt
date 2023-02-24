@@ -4,12 +4,13 @@ import android.nfc.Tag
 import android.util.Log
 import androidx.annotation.VisibleForTesting
 import com.paymentcardreader.reader.nfc.core.apdu.PaymentEnvironment
+import com.paymentcardreader.reader.nfc.entity.ScanResult
 
 /**
  * Communicate and parse EMV public card data.
  */
 internal class ReadTagCommand(
-    tag: Tag? = null
+    tag: Tag? = null,
 ) : Runnable {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)

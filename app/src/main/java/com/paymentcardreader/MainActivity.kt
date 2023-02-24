@@ -3,29 +3,30 @@ package com.paymentcardreader
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.paymentcardreader.reader.nfc.NFCCardReader
+import androidx.core.view.WindowCompat
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.NavHostFragment
+import com.paymentcardreader.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private val nfcCardReader: NFCCardReader by lazy { NFCCardReader(this) }
+    private lateinit var binding: ActivityMainBinding
+
+    private var navHostFragment: NavHostFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment?
+
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        nfcCardReader.onNewIntent(intent)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        nfcCardReader.enableForegroundDispatch()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        nfcCardReader.disableForegroundDispatch()
+        (navHostFragment?.childFragmentManager?.primaryNavigationFragment as? Scanner)
+            ?.onNewIntent(intent)
     }
 }
