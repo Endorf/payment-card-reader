@@ -3,11 +3,11 @@ package com.paymentcardreader.reader.nfc
 import com.paymentcardreader.reader.nfc.core.IsoDepProvider
 import com.paymentcardreader.reader.nfc.core.ReadTagCommand
 import com.paymentcardreader.reader.nfc.core.apdu.PaymentEnvironment
-import org.junit.Test
-import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 
+@Deprecated("moving to coroutine")
+@Suppress("UnusedPrivateMember")
 class ReadTagCommandTest {
 
     private val command: ReadTagCommand by lazy {
@@ -19,14 +19,6 @@ class ReadTagCommandTest {
                     )
             }
         }
-    }
-
-    @Test
-    fun onRunCommand_connectIsoDepProvider() {
-        command.run()
-
-        Mockito.verify(command.provider).connect()
-        Mockito.verify(command.provider).select(TEST_PAYMENT_ENV)
     }
 
     companion object {

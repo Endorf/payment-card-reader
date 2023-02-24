@@ -1,6 +1,6 @@
 package com.paymentcardreader
 
-import android.content.Intent
+import android.nfc.Tag
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,7 +30,7 @@ class CardPreviewFragment : Fragment(), Scanner {
         return binding.root
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewTag(intent: Tag?) {
         viewModel.onNewIntent(intent)
     }
 }

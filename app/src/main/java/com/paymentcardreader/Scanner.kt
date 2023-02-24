@@ -1,8 +1,8 @@
 package com.paymentcardreader
 
-import android.content.Intent
+import android.nfc.Tag
 
 interface Scanner {
 
-    fun onNewIntent(intent: Intent?)
+    fun onNewTag(intent: Tag?)
 }

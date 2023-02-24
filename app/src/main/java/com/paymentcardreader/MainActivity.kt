@@ -1,6 +1,8 @@
 package com.paymentcardreader
 
 import android.content.Intent
+import android.nfc.NfcAdapter
+import android.nfc.Tag
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -19,14 +21,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment?
-
+        navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment?
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        (navHostFragment?.childFragmentManager?.primaryNavigationFragment as? Scanner)
-            ?.onNewIntent(intent)
+
+        intent.takeIf { NfcAdapter.ACTION_TECH_DISCOVERED == intent?.action }
+            ?.let {
+                val tag = it.parcelable<Tag>(NfcAdapter.EXTRA_TAG)
+                (
+                    navHostFragment?.childFragmentManager
+                        ?.primaryNavigationFragment as? Scanner
+                    )
+                    ?.onNewTag(tag)
+            }
     }
 }

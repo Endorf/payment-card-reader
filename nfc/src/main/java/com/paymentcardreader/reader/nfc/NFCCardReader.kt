@@ -1,6 +1,5 @@
 package com.paymentcardreader.reader.nfc
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.PendingIntent
 import android.content.Intent
@@ -10,13 +9,13 @@ import android.nfc.Tag
 import android.nfc.tech.IsoDep
 import android.nfc.tech.NfcA
 import android.util.Log
+import com.paymentcardreader.reader.nfc.core.ReadTagCallable
 import com.paymentcardreader.reader.nfc.core.ReadTagCommand
-import com.paymentcardreader.reader.nfc.util.parcelable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
-@SuppressLint("UnspecifiedImmutableFlag")
+@Suppress("UnspecifiedImmutableFlag")
 class NFCCardReader(
     private val activity: Activity
 ) {
@@ -32,24 +31,27 @@ class NFCCardReader(
     private var readTask: Future<*>? = null
     private val readTaskExecutor: ExecutorService = Executors.newSingleThreadExecutor()
 
+    @Deprecated("submitTag")
     fun onNewIntent(intent: Intent?) {
-        val tag = intent?.parcelable<Tag>(NfcAdapter.EXTRA_TAG)
+        val tag = intent?.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
         readTaskExecutor.submit(ReadTagCommand(tag))
         Log.d(TAG, "tag: $tag")
     }
+
+    suspend fun submitTag(tag: Tag?) = ReadTagCallable(tag).call()
 
     fun enableForegroundDispatch() {
         nfcAdapter.enableForegroundDispatch(activity, nfcAdapterIntent, INTENT_FILTER, TECH_LIST)
     }
 
     fun disableForegroundDispatch() {
-
         readTask?.cancel(true)
         nfcAdapter.disableForegroundDispatch(activity)
     }
 
     companion object {
 
+        @Suppress("UnusedPrivateMember")
         private const val TAG = "NFCCardReader"
 
         private val TECH_LIST = arrayOf(arrayOf(NfcA::class.java.name, IsoDep::class.java.name))

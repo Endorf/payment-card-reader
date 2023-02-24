@@ -1,4 +1,4 @@
-package com.paymentcardreader.reader.nfc.util
+package com.paymentcardreader
 
 import android.content.Intent
 import android.os.Build

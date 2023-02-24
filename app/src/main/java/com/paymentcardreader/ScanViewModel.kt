@@ -1,11 +1,16 @@
 package com.paymentcardreader
 
-import android.content.Intent
+import android.nfc.Tag
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.paymentcardreader.entity.ScanState
+import com.paymentcardreader.entity.mapper.toScanState
 import com.paymentcardreader.reader.nfc.NFCCardReader
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ScanViewModel : ViewModel() {
 
@@ -16,7 +21,11 @@ class ScanViewModel : ViewModel() {
     val scanState: MutableLiveData<ScanState> by lazy { MutableLiveData<ScanState>() }
 
     fun scan() {
-        enableForegroundDispatch()
+        when (inProgressState.value) {
+            true -> disableForegroundDispatch()
+            false -> enableForegroundDispatch()
+            else -> enableForegroundDispatch()
+        }
     }
 
     fun enableForegroundDispatch() {
@@ -31,8 +40,15 @@ class ScanViewModel : ViewModel() {
         nfcCardReader?.disableForegroundDispatch()
     }
 
-    fun onNewIntent(intent: Intent?) {
-        nfcCardReader?.onNewIntent(intent)
+    fun onNewIntent(tag: Tag?) {
+        viewModelScope.launch(Dispatchers.Default) {
+            val result = nfcCardReader?.submitTag(tag)
+
+            withContext(Dispatchers.Main) {
+                scanState.value = result?.getOrNull()?.toScanState()
+                disableForegroundDispatch()
+            }
+        }
     }
 
     fun initScanner(requireActivity: FragmentActivity) {
