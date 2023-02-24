@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Payment Card Reader</string>
+
+    <string name="preview_title_btn">Scan</string>
+    <string name="preview_title_application_label">Application Label: </string>
+    <string name="preview_title_aid">AID: </string>
 </resources>

@@ -5,32 +5,34 @@ import android.util.Log
 import androidx.annotation.VisibleForTesting
 import com.paymentcardreader.reader.nfc.core.apdu.PaymentEnvironment
 import com.paymentcardreader.reader.nfc.core.util.toHex
+import com.paymentcardreader.reader.nfc.entity.ScanResult
+import com.paymentcardreader.reader.nfc.exception.TagNotRecognizedException
 
-/**
- * Communicate and parse EMV public card data.
- */
-@Deprecated("moving to coroutine")
-internal class ReadTagCommand(
+class ReadTagCallable(
     tag: Tag? = null
-) : Runnable {
+) {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal var provider = IsoDepProvider(tag)
 
-    override fun run() {
+    suspend fun call(): Result<ScanResult> {
         provider.connect()
 
         val (isSuccessful, data) = provider.select(PaymentEnvironment.PPSE.toByteArray())
 
-        if (isSuccessful) {
-            extractLabel(data)
-            selectADF(data)
+        return if (isSuccessful) {
+            val label = extractLabel(data)
+            val aid = selectADF(data)
+
+            return Result.success(ScanResult(label, aid))
+        } else {
+            Result.failure(TagNotRecognizedException())
         }
     }
 
-    private fun selectADF(data: ByteArray?) {
+    private fun selectADF(data: ByteArray?): String {
         val aid = data.extractTLV(EMV.ADF())
-        val (isSuccessful, adf) = provider.select(aid)
+        val (_, adf) = provider.select(aid)
 
         Log.d(
             "ReadTagCommand",
@@ -39,10 +41,12 @@ internal class ReadTagCommand(
             ADF select: ${adf.contentToString()}
             """.trimIndent()
         )
+
+        return aid.toHex()
     }
 
-    private fun extractLabel(data: ByteArray?) {
-        val label = data.extractTLV(EMV.APPLICATION_LABEL)
-        Log.d("ReadTagCommand", "Application Label: ${label.asString()}")
-    }
+    private fun extractLabel(data: ByteArray?) =
+        data.extractTLV(EMV.APPLICATION_LABEL).asString().also {
+            Log.d("ReadTagCommand", "Application Label: $it")
+        }
 }
