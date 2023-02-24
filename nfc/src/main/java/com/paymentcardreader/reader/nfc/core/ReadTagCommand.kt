@@ -4,13 +4,12 @@ import android.nfc.Tag
 import android.util.Log
 import androidx.annotation.VisibleForTesting
 import com.paymentcardreader.reader.nfc.core.apdu.PaymentEnvironment
-import com.paymentcardreader.reader.nfc.entity.ScanResult
 
 /**
  * Communicate and parse EMV public card data.
  */
 internal class ReadTagCommand(
-    tag: Tag? = null,
+    tag: Tag? = null
 ) : Runnable {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -22,7 +21,25 @@ internal class ReadTagCommand(
         val (isSuccessful, data) = provider.select(PaymentEnvironment.PPSE.toByteArray())
 
         if (isSuccessful) {
-            Log.d("ReadTagCommand", "scanning results: $isSuccessful, ${data?.size}")
+            extractLabel(data)
+            selectADF(data)
         }
+    }
+
+    private fun selectADF(data: ByteArray?) {
+        val aid = data.extractTLV(EMV.ADF())
+        val (isSuccessful, adf) = provider.select(aid)
+
+        Log.d(
+            "ReadTagCommand", """
+            AID: ${aid.toHex()} ( ${aid.contentToString()} )
+            ADF select: ${adf.contentToString()}
+        """.trimIndent()
+        )
+    }
+
+    private fun extractLabel(data: ByteArray?) {
+        val label = data.extractTLV(EMV.APPLICATION_LABEL)
+        Log.d("ReadTagCommand", "Application Label: ${label.asString()}")
     }
 }

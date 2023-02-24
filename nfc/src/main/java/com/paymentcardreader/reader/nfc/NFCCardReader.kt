@@ -9,10 +9,9 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.IsoDep
 import android.nfc.tech.NfcA
-import android.os.Build
 import android.util.Log
-import androidx.annotation.MainThread
 import com.paymentcardreader.reader.nfc.core.ReadTagCommand
+import com.paymentcardreader.reader.nfc.util.parcelable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
@@ -34,28 +33,17 @@ class NFCCardReader(
     private val readTaskExecutor: ExecutorService = Executors.newSingleThreadExecutor()
 
     fun onNewIntent(intent: Intent?) {
-        val tag = obtainTag(intent)
-        readTask?.cancel(true)
-        readTask = readTaskExecutor.submit(ReadTagCommand(tag))
+        val tag = intent?.parcelable<Tag>(NfcAdapter.EXTRA_TAG)
+        readTaskExecutor.submit(ReadTagCommand(tag))
         Log.d(TAG, "tag: $tag")
     }
 
-    @Suppress("DEPRECATION")
-    private fun obtainTag(intent: Intent?): Tag? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent?.getParcelableExtra(NfcAdapter.EXTRA_TAG, Tag::class.java)
-        } else {
-            intent?.getParcelableExtra(NfcAdapter.EXTRA_TAG) as? Tag
-        }
-    }
-
-    @MainThread
     fun enableForegroundDispatch() {
         nfcAdapter.enableForegroundDispatch(activity, nfcAdapterIntent, INTENT_FILTER, TECH_LIST)
     }
 
-    @MainThread
     fun disableForegroundDispatch() {
+
         readTask?.cancel(true)
         nfcAdapter.disableForegroundDispatch(activity)
     }
