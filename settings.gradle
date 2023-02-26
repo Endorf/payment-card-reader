@@ -9,7 +9,7 @@ dependencyResolutionManagement {
     versionCatalogs {
         libs {
             library('core-ktx', 'androidx.core:core-ktx:1.9.0')
-            library('androidx-appcompat', 'androidx.appcompat:appcompat:1.5.1')
+            library('androidx-appcompat', 'androidx.appcompat:appcompat:1.6.1')
             library('material', 'com.google.android.material:material:1.7.0')
         }
         testLibs {
