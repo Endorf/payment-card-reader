@@ -46,12 +46,20 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        dataBinding true
+    }
 }
 
 dependencies {
     implementation project(":nfc")
 
     implementation libs.core.ktx
-    implementation libs.androidx.appcompat
     implementation libs.material
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.navigation.fragment.ktx
+    implementation libs.androidx.navigation.ui.ktx
+    implementation libs.androidx.livedata.ktx
+
 }

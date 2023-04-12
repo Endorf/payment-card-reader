@@ -13,4 +13,18 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="PreviewTitleTextView">
+        <item name="android:layout_width">@dimen/title_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/purple_500</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="PreviewTextView">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/purple_500</item>
+        <item name="android:isScrollContainer">true</item>
+    </style>
 </resources>
